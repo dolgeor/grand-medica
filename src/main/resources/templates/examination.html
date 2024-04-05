@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Examination Information</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .form-container {
+            margin-top: 20px;
+            background-color: #f2f2f2;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .form-container input[type="text"],
+        .form-container input[type="date"],
+        .form-container textarea,
+        .form-container button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        .form-container textarea {
+            height: 100px;
+        }
+
+        .form-container button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .form-container button:hover {
+            background-color: #45a049;
+        }
+
+        .patient-details {
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #f2f2f2;
+            border-radius: 8px;
+        }
+
+        .patient-details p {
+            margin: 5px 0;
+        }
+
+        .patient-details h2 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Medical Examination Information</h1>
+    <div class="patient-details">
+        <h2>Patient Details</h2>
+        <p>First Name: <span th:text="${patient.firstName}"></span></p>
+        <p>Last Name: <span th:text="${patient.lastName}"></span></p>
+        <p>Phone: <span th:text="${patient.phone}"></span></p>
+        <p>Location: <span th:text="${patient.location}"></span></p>
+        <p>Birth Date: <span th:text="${patient.birthDate}"></span></p>
+    </div>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Date</th>
+            <th>Complaint</th>
+            <th>Pathological Antecedents & Current Treatment</th>
+            <th>Heredocollateral Anamnesis</th>
+            <th>Diagnosis</th>
+            <th>Recommendation</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="exam : ${examinations}">
+            <td th:text="${exam.id}"></td>
+            <td th:text="${exam.date}"></td>
+            <td th:text="${exam.complaint}"></td>
+            <td th:text="${exam.pathologicalAntecedentsAndCurrentTreatment}"></td>
+            <td th:text="${exam.heredocollateralAnamnesis}"></td>
+            <td th:text="${exam.diagnosis}"></td>
+            <td th:text="${exam.recommendation}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="form-container">
+        <h2>Add New Medical Examination</h2>
+        <form action="/examinations/add" method="post">
+            <input type="date" name="date" id="examDate" required><br>
+            <input type="text" name="complaint" placeholder="Complaint" required><br>
+            <textarea name="pathologicalAntecedentsAndCurrentTreatment" placeholder="Pathological Antecedents & Current Treatment" required></textarea><br>
+            <textarea name="heredocollateralAnamnesis" placeholder="Heredocollateral Anamnesis" required></textarea><br>
+            <input type="text" name="diagnosis" placeholder="Diagnosis" required><br>
+            <textarea name="recommendation" placeholder="Recommendation" required></textarea><br>
+            <input type="hidden" name="patientId" th:value="${patient.id}">
+            <button type="submit">Add Examination</button>
+        </form>
+    </div>
+</div>
+<script>
+    // Get today's date in YYYY-MM-DD format
+    var today = new Date().toISOString().split('T')[0];
+
+    // Set the default value of the input field
+    document.getElementById('examDate').value = today;
+</script>
+</body>
+</html>
